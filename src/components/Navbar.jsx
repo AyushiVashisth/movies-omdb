@@ -34,6 +34,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", controlNavBar);
     };
+    // eslint-disable-next-line
   }, [lastScrollY]);
 
   const openMobileMenu = () => {
