@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// https://www.omdbapi.com/?apikey=2d4765cd&s=sun&type=movie
+
 const apiKey = "70371f99";
 const baseUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 

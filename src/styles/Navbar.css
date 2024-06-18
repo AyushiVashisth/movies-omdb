@@ -59,9 +59,10 @@
   color: white;
   font-weight: 500;
   position: relative;
+  cursor: pointer;
 }
 
-.header .menuItems .menuItem.searchIcon {
+.header .menuItems .menuItem .searchIcon {
   margin-right: 0;
 }
 
@@ -95,7 +96,7 @@
   background: #020c1b;
 }
 
-.header.mobileView .menuItems {
+.header .mobileView .menuItems {
   display: flex;
   position: absolute;
   top: 60px;
@@ -108,7 +109,7 @@
   animation: mobileMenu 0.3s ease forwards;
 }
 
-.header.mobileView .menuItems .menuItem {
+.header .mobileView .menuItems .menuItem {
   font-size: 20px;
   width: 100%;
   height: auto;
@@ -117,9 +118,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  cursor: pointer;
 }
 
-.header.mobileView .menuItems .menuItem:last-child {
+
+.header .mobileView .menuItems .menuItem:last-child {
   display: none;
 }
 
