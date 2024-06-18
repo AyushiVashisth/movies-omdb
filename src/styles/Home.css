@@ -1,0 +1,10 @@
+.heroBanner {
+  width: 100wh;
+  height: 100vh;
+  background-color: #04152d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-size: cover;
+}
