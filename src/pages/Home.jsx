@@ -16,7 +16,7 @@ const Home = () => {
       setCurrentBgIndex((prevIndex) =>
         prevIndex === movieImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 1000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -50,7 +50,7 @@ const Home = () => {
           <div className="searchInput">
             <input
               type="text"
-              placeholder="Search for movie or TV show.."
+              placeholder="Search for movie or series.."
               onChange={(e) => setQuery(e.target.value)}
               onKeyUp={searchQueryHandler}
             />
