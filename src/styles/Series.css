@@ -1,4 +1,4 @@
-.movies-container {
+.series-container {
   padding: 20px;
 }
 
@@ -71,7 +71,7 @@
   justify-content: center;
 }
 
-.movie-item {
+.series-item {
   box-sizing: border-box;
   padding: 10px;
   background: transparent;
@@ -82,11 +82,11 @@
   margin-top: 30px;
 }
 
-.movie-item:hover {
+.series-item:hover {
   transform: translateY(-5px);
 }
 
-.movie-item img {
+.series-item img {
   width: 100%;
   aspect-ratio: 2 / 3;
   border-radius: 10px;
@@ -95,13 +95,13 @@
   background-position: center;
 }
 
-.movie-item h2 {
+.series-item h2 {
   font-size: 18px;
   margin: 10px 0;
   color: white;
 }
 
-.movie-item p {
+.series-item p {
   font-size: 16px;
   color: #bfbfbf;
 }
@@ -109,14 +109,20 @@
 @media (max-width: 1200px) {
   .skeleton-container,
   .results-container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .skeleton-item {
+    height: 200px;
   }
 }
 
 @media (max-width: 768px) {
   .skeleton-container,
   .results-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  .skeleton-item {
+    height: 200px;
   }
 }
 
@@ -129,11 +135,11 @@
   .filters input {
     margin-bottom: 10px;
     width: 95%;
-    margin: auto; 
+    margin: auto;
   }
 
   .filters button {
-    width: 100%; 
+    width: 100%;
   }
 
   .skeleton-container,

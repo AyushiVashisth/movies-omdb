@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Navbar from "../components/Navbar";
 import SearchResults from "../pages/SearchResults";
 import Movies from "../pages/Movies";
+import Series from "../pages/Series";
 
 const AllRoutes = () => {
   return (
@@ -13,7 +14,7 @@ const AllRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/search/:query" element={<SearchResults />} />
         <Route path="/movie" element={<Movies />} />
-        {/* <Route path="/series" element={<Series />} /> */}
+        <Route path="/series" element={<Series />} />
       </Routes>
       {/* <Footer /> */}
     </BrowserRouter>
