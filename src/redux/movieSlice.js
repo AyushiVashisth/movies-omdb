@@ -1,17 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+// REACT_APP_API_KEY=70371f99
+// REACT_APP_BASE_URL=http://www.omdbapi.com
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
+
 export const fetchMovies = createAsyncThunk(
   "movies/fetchMovies",
   async (params) => {
-    console.log("Fetching movies with params:", params);
     const response = await axios.get(
       `${baseUrl}/?apikey=${apiKey}&s=${params.query}&type=${params.type}`
     );
-    console.log("API response:", response.data);
     return response.data.Search || [];
   }
 );
@@ -19,11 +20,9 @@ export const fetchMovies = createAsyncThunk(
 export const fetchMovieDetails = createAsyncThunk(
   "movies/fetchMovieDetails",
   async (movieId) => {
-    console.log("Fetching movie details for ID:", movieId);
     const response = await axios.get(
       `${baseUrl}/?apikey=${apiKey}&i=${movieId}`
     );
-    console.log("Movie details response:", response.data);
     return response.data;
   }
 );
