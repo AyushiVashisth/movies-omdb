@@ -16,6 +16,14 @@ const AllRoutes = () => {
         <Route path="/search/:query" element={<SearchResults />} />
         <Route path="/movie" element={<Movies />} />
         <Route path="/series" element={<Series />} />
+        <Route
+          path="*"
+          element={
+            <div className="notFound">
+              <p>Not found page</p>
+            </div>
+          }
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

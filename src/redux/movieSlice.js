@@ -16,15 +16,28 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
+export const fetchMovieDetails = createAsyncThunk(
+  "movies/fetchMovieDetails",
+  async (movieId) => {
+    console.log("Fetching movie details for ID:", movieId);
+    const response = await axios.get(
+      `${baseUrl}/?apikey=${apiKey}&i=${movieId}`
+    );
+    console.log("Movie details response:", response.data);
+    return response.data;
+  }
+);
+
 const movieSlice = createSlice({
   name: "movies",
   initialState: {
     movies: [],
     series: [],
+    selectedMovie: null,
     status: "idle",
     error: null,
     filters: {
-      title: "sun",
+      title: "beauty",
       year: ""
     }
   },
@@ -34,6 +47,9 @@ const movieSlice = createSlice({
     },
     setYearFilter: (state, action) => {
       state.filters.year = action.payload;
+    },
+    clearSelectedMovie: (state) => {
+      state.selectedMovie = null;
     }
   },
   extraReducers: (builder) => {
@@ -52,10 +68,21 @@ const movieSlice = createSlice({
       .addCase(fetchMovies.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(fetchMovieDetails.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchMovieDetails.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.selectedMovie = action.payload;
+      })
+      .addCase(fetchMovieDetails.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   }
 });
 
-export const { setTitleFilter, setYearFilter } = movieSlice.actions;
+export const { setTitleFilter, setYearFilter, clearSelectedMovie } = movieSlice.actions;
 
 export default movieSlice.reducer;

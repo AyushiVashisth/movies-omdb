@@ -3,29 +3,56 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchMovies,
   setTitleFilter,
-  setYearFilter
+  setYearFilter,
+  clearSelectedMovie,
+  fetchMovieDetails
 } from "../redux/movieSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "../styles/Series.css";
+import MovieDetails from "../components/MovieDetails";
 
 const Series = () => {
   const dispatch = useDispatch();
-  const { series, status, error, filters } = useSelector(
+  const { series, status, error, filters, selectedMovie } = useSelector(
     (state) => state.movies
   );
   const [sortBy, setSortBy] = useState("asc");
+  const [titleFilter, setTitleFilterLocal] = useState(filters.title);
+  const [yearFilter, setYearFilterLocal] = useState(filters.year);
+  let debounceTimeout = null;
 
   useEffect(() => {
-    dispatch(fetchMovies({ query: filters.title, type: "series" }));
-  }, [dispatch, filters.title]);
+    return () => {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+    };
+  }, []);
+
+  const debounceSearch = (func, delay) => {
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+    debounceTimeout = setTimeout(func, delay);
+  };
 
   const handleTitleChange = (e) => {
-    dispatch(setTitleFilter(e.target.value));
+    const { value } = e.target;
+    setTitleFilterLocal(value);
+    debounceSearch(() => {
+      dispatch(setTitleFilter(value));
+      dispatch(fetchMovies({ query: value, type: "series" }));
+    }, 1000);
   };
 
   const handleYearChange = (e) => {
-    dispatch(setYearFilter(e.target.value));
+    const { value } = e.target;
+    setYearFilterLocal(value);
+    debounceSearch(() => {
+      dispatch(setYearFilter(value));
+      dispatch(fetchMovies({ query: filters.title, type: "series" }));
+    }, 1000);
   };
 
   const toggleSort = () => {
@@ -42,8 +69,16 @@ const Series = () => {
   });
 
   const filteredSeries = sortedSeries.filter(
-    (seriesItem) => filters.year === "" || seriesItem.Year === filters.year
+    (seriesItem) => yearFilter === "" || seriesItem.Year === yearFilter
   );
+
+  const handleSeriesClick = (seriesId) => {
+    dispatch(fetchMovieDetails(seriesId));
+  };
+
+  const handleCloseDetails = () => {
+    dispatch(clearSelectedMovie());
+  };
 
   return (
     <div className="series-container">
@@ -51,13 +86,13 @@ const Series = () => {
         <input
           type="text"
           placeholder="Filter by title..."
-          value={filters.title}
+          value={titleFilter}
           onChange={handleTitleChange}
         />
         <input
           type="text"
           placeholder="Filter by year..."
-          value={filters.year}
+          value={yearFilter}
           onChange={handleYearChange}
         />
         <button onClick={toggleSort}>
@@ -87,7 +122,11 @@ const Series = () => {
       {status === "succeeded" && filteredSeries.length > 0 && (
         <div className="results-container">
           {filteredSeries.map((seriesItem) => (
-            <div key={seriesItem.imdbID} className="series-item">
+            <div
+              key={seriesItem.imdbID}
+              className="series-item"
+              onClick={() => handleSeriesClick(seriesItem.imdbID)}
+            >
               <img src={seriesItem.Poster} alt={seriesItem.Title} />
               <h2>{seriesItem.Title}</h2>
               <p>{seriesItem.Year}</p>
@@ -96,6 +135,10 @@ const Series = () => {
         </div>
       )}
       {status === "failed" && <p>{error}</p>}
+
+      {selectedMovie && (
+        <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
+      )}
     </div>
   );
 };

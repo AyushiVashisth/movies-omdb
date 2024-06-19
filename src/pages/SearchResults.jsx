@@ -1,25 +1,33 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchMovies } from "../redux/movieSlice";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import {
+  fetchMovies,
+  clearSelectedMovie,
+  fetchMovieDetails
+} from "../redux/movieSlice";
+import MovieDetails from "../components/MovieDetails";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/SearchResults.css";
 import { FaHandPointLeft } from "react-icons/fa";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const SearchResults = () => {
   const { query } = useParams();
   const dispatch = useDispatch();
-  const { movies, status, error } = useSelector((state) => state.movies);
+  const { movies, status, error, selectedMovie } = useSelector(
+    (state) => state.movies
+  );
   const navigate = useNavigate();
-  console.log("Movies:", movies);
 
   useEffect(() => {
     if (query) {
       dispatch(fetchMovies({ query, type: "movie" }));
     }
+    return () => {
+      dispatch(clearSelectedMovie());
+    };
   }, [dispatch, query]);
 
   useEffect(() => {
@@ -32,12 +40,20 @@ const SearchResults = () => {
     navigate(`/`);
   };
 
+  const handleMovieClick = (movieId) => {
+    dispatch(fetchMovieDetails(movieId));
+  };
+
+  const handleCloseDetails = () => {
+    dispatch(clearSelectedMovie());
+  };
+
   return (
     <div className="search-results">
       <div className="heading-container">
         <h1>Search Results for "{query}"</h1>
         <button className="backButton" onClick={handleBack}>
-          <FaHandPointLeft className="backIcon"  />
+          <FaHandPointLeft className="backIcon" />
           Back
         </button>
       </div>
@@ -57,15 +73,21 @@ const SearchResults = () => {
           </div>
         </SkeletonTheme>
       )}
+
       {status === "succeeded" && movies.length === 0 && (
         <div className="no-results">
-          <p className="loading-animation">No results found.</p>
+          <p>No results found.</p>
         </div>
       )}
+
       {status === "succeeded" && movies.length > 0 && (
         <div className="results-container">
           {movies.map((movie) => (
-            <div key={movie.imdbID} className="movie-item">
+            <div
+              key={movie.imdbID}
+              className="movie-item"
+              onClick={() => handleMovieClick(movie.imdbID)}
+            >
               <img src={movie.Poster} alt={movie.Title} />
               <h2>{movie.Title}</h2>
               <p>{movie.Year}</p>
@@ -73,7 +95,13 @@ const SearchResults = () => {
           ))}
         </div>
       )}
+
       {status === "failed" && <p>{error}</p>}
+
+      {selectedMovie && (
+        <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
+      )}
+
       <ToastContainer />
     </div>
   );
