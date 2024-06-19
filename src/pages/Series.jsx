@@ -28,7 +28,7 @@ const Series = () => {
         clearTimeout(debounceTimeout);
       }
     };
-  }, []);
+  }, [debounceTimeout]);
 
   const debounceSearch = (func, delay) => {
     if (debounceTimeout) {
