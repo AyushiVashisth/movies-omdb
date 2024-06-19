@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import SearchResults from "../pages/SearchResults";
 import Movies from "../pages/Movies";
 import Series from "../pages/Series";
+import Footer from "../components/Footer";
 
 const AllRoutes = () => {
   return (
@@ -16,7 +17,7 @@ const AllRoutes = () => {
         <Route path="/movie" element={<Movies />} />
         <Route path="/series" element={<Series />} />
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </BrowserRouter>
   );
 };

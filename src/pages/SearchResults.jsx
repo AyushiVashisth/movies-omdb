@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchMovies } from "../redux/movieSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/SearchResults.css";
+import { FaHandPointLeft } from "react-icons/fa";
 
 const SearchResults = () => {
   const { query } = useParams();
   const dispatch = useDispatch();
   const { movies, status, error } = useSelector((state) => state.movies);
+  const navigate = useNavigate();
   console.log("Movies:", movies);
 
   useEffect(() => {
@@ -26,9 +28,20 @@ const SearchResults = () => {
     }
   }, [error]);
 
+  const handleBack = () => {
+    navigate(`/`);
+  };
+
   return (
     <div className="search-results">
-      <h1>Search Results for "{query}"</h1>
+      <div className="heading-container">
+        <h1>Search Results for "{query}"</h1>
+        <button className="backButton" onClick={handleBack}>
+          <FaHandPointLeft className="backIcon"  />
+          Back
+        </button>
+      </div>
+
       {status === "loading" && (
         <SkeletonTheme color="#202020" highlightColor="#444">
           <div className="skeleton-container">
