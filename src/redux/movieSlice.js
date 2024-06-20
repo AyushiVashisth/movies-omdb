@@ -6,7 +6,6 @@ import axios from "axios";
 const apiKey = process.env.REACT_APP_API_KEY;
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-
 export const fetchMovies = createAsyncThunk(
   "movies/fetchMovies",
   async (params) => {
@@ -36,7 +35,7 @@ const movieSlice = createSlice({
     status: "idle",
     error: null,
     filters: {
-      title: "beauty",
+      title: "",
       year: ""
     }
   },
@@ -82,6 +81,7 @@ const movieSlice = createSlice({
   }
 });
 
-export const { setTitleFilter, setYearFilter, clearSelectedMovie } = movieSlice.actions;
+export const { setTitleFilter, setYearFilter, clearSelectedMovie } =
+  movieSlice.actions;
 
 export default movieSlice.reducer;

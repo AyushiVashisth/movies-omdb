@@ -49,7 +49,11 @@ const MovieDetails = ({ movieId, onClose }) => {
           <button className="close-button" onClick={onClose}>
             <FaTimes />
           </button>
-          <img src={selectedMovie.Poster} alt={selectedMovie.Title} />
+          <div>
+            {" "}
+            <img src={selectedMovie.Poster} alt={selectedMovie.Title} />
+          </div>
+
           <div className="details">
             <h2>{selectedMovie.Title}</h2>
             <p>

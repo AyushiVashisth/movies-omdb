@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const navigate = useNavigate();
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
@@ -15,15 +16,73 @@ const Home = () => {
       setCurrentBgIndex((prevIndex) =>
         prevIndex === movieImages.length - 1 ? 0 : prevIndex + 1
       );
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  const searchQueryHandler = (event) => {
-    if (event.key === "Enter" && query.length > 0) {
-      navigate(`/search/${query}`);
+  useEffect(() => {
+    const texts = [
+      "The ultimate destination for movie lovers.",
+      "Discover new movies and series.",
+      "Explore your favorite genres."
+    ];
+
+    let index = 0;
+    let charIndex = 0;
+    let currentText = "";
+    let typingTimeout;
+
+    const type = () => {
+      if (document.getElementById("typedText")) {
+        if (charIndex < texts[index].length) {
+          currentText = texts[index].substring(0, charIndex + 1);
+          document.getElementById("typedText").textContent = currentText;
+          charIndex++;
+          typingTimeout = setTimeout(type, 150);
+        } else {
+          setTimeout(erase, 1500);
+        }
+      }
+    };
+
+    const erase = () => {
+      if (document.getElementById("typedText")) {
+        if (charIndex > 0) {
+          currentText = texts[index].substring(0, charIndex - 1);
+          document.getElementById("typedText").textContent = currentText;
+          charIndex--;
+          typingTimeout = setTimeout(erase, 50);
+        } else {
+          index = (index + 1) % texts.length;
+          setTimeout(type, 500);
+        }
+      }
+    };
+
+    typingTimeout = setTimeout(type, 500);
+
+    return () => {
+      clearTimeout(typingTimeout);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
+    console.log("clean");
+
+    return () => {
+      console.log("returnclean");
+      clearTimeout(handler);
+    };
+  }, [query]);
+
+  useEffect(() => {
+    if (debouncedQuery.length > 0) {
+      navigate(`/search/${debouncedQuery}`);
     }
-  };
+  }, [debouncedQuery, navigate]);
 
   const handleSearchClick = () => {
     if (query.length > 0) {
@@ -34,27 +93,38 @@ const Home = () => {
   };
 
   return (
-    <div
-      className="heroBanner"
-      style={{
-        backgroundImage: `url(${movieImages[currentBgIndex].imageUrl})`
-      }}
-    >
-      <div className="wrapper">
-        <div className="heroBannerContent">
-          <span className="title">Welcome</span>
-          <span className="subTitle">
-            The ultimate destination for movie lovers. Explore Now..
-          </span>
-          <div className="searchInput">
-            <input
-              type="text"
-              placeholder="Search for movie or series.."
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyUp={searchQueryHandler}
-            />
-            <button onClick={handleSearchClick}>Search</button>
-          </div>
+    <div className="heroBanner">
+      <img
+        src={movieImages[currentBgIndex].imageUrl}
+        alt="Background"
+        className="bgImage"
+      />
+      <div className="heroBannerContent">
+        <span className="title">Welcome</span>
+        <span className="subTitle" id="typedText"></span>
+        <div className="searchInput">
+          <input
+            type="text"
+            placeholder="Search for movie or series.."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === "Enter" && query.length > 0) {
+                handleSearchClick();
+              }
+            }}
+          />
+          <button className="btn" onClick={handleSearchClick}>
+            <strong>Search</strong>
+            <div id="container-stars">
+              <div id="stars"></div>
+            </div>
+
+            <div id="glow">
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+          </button>
         </div>
       </div>
       <ToastContainer />
