@@ -1,38 +1,31 @@
 .header {
   position: fixed;
-  transform: translateY(0);
+  top: 0;
   width: 100%;
-  height: 20px;
+  height: 70px;
   z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all ease 0.5s;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(3.5px);
-  -webkit-backdrop-filter: blur(3.5px);
-  opacity: 1;
-}
-
-.header .top {
+  /* padding: 20px; */
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(3.5px);
   -webkit-backdrop-filter: blur(3.5px);
 }
 
-.header .show {
+.header.top {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(3.5px);
+  -webkit-backdrop-filter: blur(3.5px);
+}
+
+.header.show {
   background-color: #020c1b;
 }
 
-.header .hide {
-  transform: translateY(-60px);
-}
-
-.header .contentWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header.hide {
+  transform: translateY(-100%);
 }
 
 .header .logo {
@@ -46,6 +39,9 @@
 .header .menuItems {
   list-style-type: none;
   display: none;
+  margin: 0;
+  padding: 0;
+
 }
 
 @media (min-width: 768px) {
@@ -61,16 +57,6 @@
   margin: 0 15px;
   color: white;
   font-weight: 500;
-  position: relative;
-  cursor: pointer;
-}
-
-.header .menuItems .menuItem .searchIcon {
-  margin-right: 0;
-}
-
-.header .menuItems .menuItem svg {
-  font-size: 18px;
   cursor: pointer;
 }
 
@@ -82,6 +68,8 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  /* border: 1px solid white; */
+  
 }
 
 @media (min-width: 768px) {
@@ -91,84 +79,34 @@
 }
 
 .header .mobileMenuItems svg {
-  font-size: 18px;
+  font-size: 24px;
   color: white;
+  cursor: pointer;
 }
 
-.header.mobileView {
-  background: #020c1b;
-}
-
-.header .mobileView .menuItems {
+.header.mobileView .menuItems {
   display: flex;
   position: absolute;
   top: 60px;
-  left: 0;
+  right: 0;
   background: #020c1b;
   flex-direction: column;
   width: 100%;
   padding: 20px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   animation: mobileMenu 0.3s ease forwards;
+  
+ 
 }
 
-.header .mobileView .menuItems .menuItem {
+.header.mobileView .menuItems .menuItem {
   font-size: 20px;
   width: 100%;
   height: auto;
   padding: 15px 20px;
   margin: 0;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  cursor: pointer;
-}
-
-.header .mobileView .menuItems .menuItem:last-child {
-  display: none;
-}
-
-.header .searchBar {
-  width: 100%;
-  height: 60px;
-  background-color: white;
-  position: absolute;
-  top: 60px;
-  animation: mobileMenu 0.3s ease forwards;
-}
-
-.header .searchBar .searchInput {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.header .searchBar .searchInput svg {
-  font-size: 20px;
-  flex-shrink: 0;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.header .searchBar .searchInput input {
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  outline: 0;
-  border: 0;
-  border-radius: 30px 0 0 30px;
-  padding: 0 15px;
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  .header .searchBar .searchInput input {
-    height: 60px;
-    font-size: 20px;
-    padding: 0 30px;
-  }
 }
 
 @keyframes mobileMenu {

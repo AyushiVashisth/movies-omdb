@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { SlMenu } from "react-icons/sl";
 import { VscChromeClose } from "react-icons/vsc";
 import { useNavigate, useLocation } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import "../styles/Navbar.css";
 import logo from "../assets/images/imdb-logo.jpg";
 
@@ -11,6 +13,10 @@ const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,7 +40,6 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", controlNavBar);
     };
-    // eslint-disable-next-line
   }, [lastScrollY]);
 
   const openMobileMenu = () => {
@@ -52,28 +57,30 @@ const Navbar = () => {
   };
 
   return (
-    <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
+    <header
+      className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}
+      data-aos="fade-down"
+    >
       <div className="logo" onClick={() => navigate("/")}>
-        <img src={logo} alt="" />
+        <img src={logo} alt="Logo" />
       </div>
       <ul className="menuItems">
         <li
           className="menuItem"
-          onClick={() => {
-            navigationHandler("movie");
-          }}
+          onClick={() => navigationHandler("movie")}
+          data-aos="fade-in"
+          data-aos-delay="200"
         >
           Movies
         </li>
         <li
           className="menuItem"
-          onClick={() => {
-            navigationHandler("series");
-          }}
+          onClick={() => navigationHandler("series")}
+          data-aos="fade-in"
+          data-aos-delay="400"
         >
           Series
         </li>
-        <li className="menuItem"></li>
       </ul>
 
       <div className="mobileMenuItems">
@@ -82,9 +89,10 @@ const Navbar = () => {
             onClick={() => {
               setMobileMenu(false);
             }}
+            data-aos="fade-in"
           />
         ) : (
-          <SlMenu onClick={openMobileMenu} />
+          <SlMenu onClick={openMobileMenu} data-aos="fade-in" />
         )}
       </div>
     </header>

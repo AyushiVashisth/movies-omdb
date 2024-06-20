@@ -11,6 +11,8 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "../styles/Series.css";
 import MovieDetails from "../components/MovieDetails";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Series = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,10 @@ const Series = () => {
   const [titleFilter, setTitleFilterLocal] = useState(filters.title);
   const [yearFilter, setYearFilterLocal] = useState(filters.year);
   let debounceTimeout = null;
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -82,7 +88,7 @@ const Series = () => {
 
   return (
     <div className="series-container">
-      <div className="filters">
+      <div className="filters" data-aos="fade-down">
         <input
           type="text"
           placeholder="Filter by title..."
@@ -103,7 +109,7 @@ const Series = () => {
         <SkeletonTheme color="#202020" highlightColor="#444">
           <div className="skeleton-container">
             {[...Array(5)].map((_, index) => (
-              <div key={index} className="skeleton-item">
+              <div key={index} className="skeleton-item" data-aos="fade-up">
                 <Skeleton circle={true} height={40} width={40} />
                 <Skeleton height={20} width={`80%`} style={{ marginTop: 10 }} />
                 <Skeleton height={20} width={`60%`} />
@@ -115,17 +121,19 @@ const Series = () => {
         </SkeletonTheme>
       )}
       {status === "succeeded" && filteredSeries.length === 0 && (
-        <div className="no-results">
+        <div className="no-results" data-aos="fade-up">
           <p>No results found.</p>
         </div>
       )}
       {status === "succeeded" && filteredSeries.length > 0 && (
-        <div className="results-container">
+        <div className="results-container" data-aos="fade-up">
           {filteredSeries.map((seriesItem) => (
             <div
               key={seriesItem.imdbID}
               className="series-item"
               onClick={() => handleSeriesClick(seriesItem.imdbID)}
+              data-aos="fade-up"
+              data-aos-delay="100"
             >
               <img src={seriesItem.Poster} alt={seriesItem.Title} />
               <h2>{seriesItem.Title}</h2>
@@ -137,7 +145,11 @@ const Series = () => {
       {status === "failed" && <p>{error}</p>}
 
       {selectedMovie && (
-        <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
+        <MovieDetails
+          movie={selectedMovie}
+          onClose={handleCloseDetails}
+          data-aos="fade-up"
+        />
       )}
     </div>
   );

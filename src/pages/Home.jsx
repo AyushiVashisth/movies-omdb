@@ -4,12 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { movieImages } from "../assets/data";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Home = () => {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const navigate = useNavigate();
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -99,10 +105,10 @@ const Home = () => {
         alt="Background"
         className="bgImage"
       />
-      <div className="heroBannerContent">
+      <div className="heroBannerContent" data-aos="fade-up">
         <span className="title">Welcome</span>
         <span className="subTitle" id="typedText"></span>
-        <div className="searchInput">
+        <div className="searchInput" data-aos="fade-up" data-aos-delay="200">
           <input
             type="text"
             placeholder="Search for movie or series.."
@@ -121,8 +127,8 @@ const Home = () => {
             </div>
 
             <div id="glow">
-              <div class="circle"></div>
-              <div class="circle"></div>
+              <div className="circle"></div>
+              <div className="circle"></div>
             </div>
           </button>
         </div>

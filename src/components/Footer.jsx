@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import "../styles/Footer.css"; // Import the CSS file
+import "../styles/Footer.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Footer = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+
   return (
     <div className="footer">
-      <div className="footer-container">
+      <div className="footer-container" data-aos="fade-up">
         <div className="footer-text">
           <p className="footer-made">Made with ❤️ by Ayushi Vashisth</p>
         </div>
@@ -16,6 +22,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="footer-link"
+            data-aos="fade-left"
           >
             <FaGithub />
           </a>
@@ -24,6 +31,8 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="footer-link"
+            data-aos="fade-left"
+            data-aos-delay="100"
           >
             <FaLinkedin />
           </a>
@@ -32,11 +41,13 @@ const Footer = () => {
             rel="noreferrer"
             target="_blank"
             className="footer-link"
+            data-aos="fade-left"
+            data-aos-delay="200"
           >
             <MdEmail />
           </a>
         </div>
-        <p className="footer-text">
+        <p className="footer-text" data-aos="fade-up" data-aos-delay="300">
           Check out my{" "}
           <a
             className="footer-link"
@@ -60,7 +71,6 @@ const Footer = () => {
         </p>
         <p>&copy; {new Date().getFullYear()} My Web. All rights reserved.</p>
       </div>
-      
     </div>
   );
 };

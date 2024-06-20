@@ -8,10 +8,12 @@ import {
 } from "../redux/movieSlice";
 import MovieDetails from "../components/MovieDetails";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "../styles/SearchResults.css";
 import { FaHandPointLeft } from "react-icons/fa";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "react-toastify/dist/ReactToastify.css";
+import "../styles/SearchResults.css";
 
 const SearchResults = () => {
   const { query } = useParams();
@@ -20,6 +22,10 @@ const SearchResults = () => {
     (state) => state.movies
   );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   useEffect(() => {
     if (query) {
@@ -50,7 +56,7 @@ const SearchResults = () => {
 
   return (
     <div className="search-results">
-      <div className="heading-container">
+      <div className="heading-container" data-aos="fade-down">
         <h1>Search Results for "{query}"</h1>
         <button className="backButton" onClick={handleBack}>
           <FaHandPointLeft className="backIcon" />
@@ -60,7 +66,7 @@ const SearchResults = () => {
 
       {status === "loading" && (
         <SkeletonTheme color="#202020" highlightColor="#444">
-          <div className="skeleton-container">
+          <div className="skeleton-container" data-aos="fade-in">
             {[...Array(5)].map((_, index) => (
               <div key={index} className="skeleton-item">
                 <Skeleton circle={true} height={40} width={40} />
@@ -75,18 +81,19 @@ const SearchResults = () => {
       )}
 
       {status === "succeeded" && movies.length === 0 && (
-        <div className="no-results">
+        <div className="no-results" data-aos="fade-in">
           <p>No results found.</p>
         </div>
       )}
 
       {status === "succeeded" && movies.length > 0 && (
-        <div className="results-container">
+        <div className="results-container" data-aos="fade-up">
           {movies.map((movie) => (
             <div
               key={movie.imdbID}
               className="movie-item"
               onClick={() => handleMovieClick(movie.imdbID)}
+              data-aos="zoom-in"
             >
               <img src={movie.Poster} alt={movie.Title} />
               <h2>{movie.Title}</h2>
@@ -96,7 +103,11 @@ const SearchResults = () => {
         </div>
       )}
 
-      {status === "failed" && <p>{error}</p>}
+      {status === "failed" && (
+        <div className="error" data-aos="fade-in">
+          <p>{error}</p>
+        </div>
+      )}
 
       {selectedMovie && (
         <MovieDetails movie={selectedMovie} onClose={handleCloseDetails} />
